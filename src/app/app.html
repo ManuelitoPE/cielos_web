@@ -1,0 +1,18 @@
+<app-cart></app-cart>
+
+<header class="app-header">
+  <div class="container header-content">
+    <div class="logo">
+      <a routerLink="/">CIELO BLUE</a>
+    </div>
+    <nav>
+      <button class="cart-btn" (click)="cartService.toggleCart()">
+        Carrito compra ({{ cartService.items().length }})
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>

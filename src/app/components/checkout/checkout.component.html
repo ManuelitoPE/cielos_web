@@ -1,0 +1,143 @@
+<div class="checkout-container">
+    <div class="checkout-content" *ngIf="!isSuccess(); else successMessage">
+        <div class="checkout-form">
+            <h2>Checkout</h2>
+            <form (ngSubmit)="onSubmit()" #checkoutForm="ngForm">
+                <div class="form-section">
+                    <h3>Contact</h3>
+                    <input type="email" placeholder="Email" [(ngModel)]="formData.email" name="email" required>
+                </div>
+
+                <div class="form-section">
+                    <h3>Shipping Address</h3>
+                    <div class="form-row">
+                        <input type="text" placeholder="First Name" [(ngModel)]="formData.firstName" name="firstName"
+                            required>
+                        <input type="text" placeholder="Last Name" [(ngModel)]="formData.lastName" name="lastName"
+                            required>
+                    </div>
+                    <input type="text" placeholder="Address" [(ngModel)]="formData.address" name="address" required>
+                    <div class="form-row">
+                        <input type="text" placeholder="City" [(ngModel)]="formData.city" name="city" required>
+                        <input type="text" placeholder="ZIP Code" [(ngModel)]="formData.zip" name="zip" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Payment Method</h3>
+                    <div class="payment-methods">
+                        <label class="payment-option" [class.selected]="formData.paymentMethod === 'card'">
+                            <input type="radio" name="paymentMethod" [(ngModel)]="formData.paymentMethod" value="card">
+                            <span class="method-name">Credit/Debit Card</span>
+                        </label>
+                        <label class="payment-option" [class.selected]="formData.paymentMethod === 'yape'">
+                            <input type="radio" name="paymentMethod" [(ngModel)]="formData.paymentMethod" value="yape">
+                            <span class="method-name">Yape</span>
+                        </label>
+                        <label class="payment-option" [class.selected]="formData.paymentMethod === 'plin'">
+                            <input type="radio" name="paymentMethod" [(ngModel)]="formData.paymentMethod" value="plin">
+                            <span class="method-name">Plin</span>
+                        </label>
+                        <label class="payment-option" [class.selected]="formData.paymentMethod === 'transfer'">
+                            <input type="radio" name="paymentMethod" [(ngModel)]="formData.paymentMethod"
+                                value="transfer">
+                            <span class="method-name">Bank Transfer</span>
+                        </label>
+                    </div>
+
+                    <!-- Card Payment -->
+                    <div class="payment-details" *ngIf="formData.paymentMethod === 'card'">
+                        <div class="card-element">
+                            <input type="text" placeholder="Card Number" [(ngModel)]="formData.cardNumber"
+                                name="cardNumber" required>
+                            <div class="form-row">
+                                <input type="text" placeholder="MM/YY" [(ngModel)]="formData.expiry" name="expiry"
+                                    required>
+                                <input type="text" placeholder="CVC" [(ngModel)]="formData.cvc" name="cvc" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Yape Payment -->
+                    <div class="payment-details offline-payment" *ngIf="formData.paymentMethod === 'yape'">
+                        <div class="qr-placeholder yape">
+                            <div class="qr-code">Yape</div>
+                            <p>Pay with Yape</p>
+                        </div>
+                        <div class="form-row">
+                            <input type="tel" placeholder="Phone Number" [(ngModel)]="formData.phoneNumber"
+                                name="phoneNumber" required>
+                            <input type="text" placeholder="Approval Code (OTP)" [(ngModel)]="formData.approvalCode"
+                                name="approvalCode" required>
+                        </div>
+                        <p class="instruction">Enter your registered phone and the code from your Yape app.</p>
+                    </div>
+
+                    <!-- Plin Payment -->
+                    <div class="payment-details offline-payment" *ngIf="formData.paymentMethod === 'plin'">
+                        <div class="qr-placeholder plin">
+                            <div class="qr-code">Plin</div>
+                            <p>Pay with Plin</p>
+                        </div>
+                        <div class="form-row">
+                            <input type="tel" placeholder="Phone Number" [(ngModel)]="formData.phoneNumber"
+                                name="phoneNumber" required>
+                            <input type="text" placeholder="Approval Code (OTP)" [(ngModel)]="formData.approvalCode"
+                                name="approvalCode" required>
+                        </div>
+                        <p class="instruction">Enter your registered phone and the code from your Plin app.</p>
+                    </div>
+
+                    <!-- Bank Transfer -->
+                    <div class="payment-details offline-payment" *ngIf="formData.paymentMethod === 'transfer'">
+                        <div class="bank-details">
+                            <p><strong>Bank:</strong> BCP</p>
+                            <p><strong>Account:</strong> 193-12345678-0-01</p>
+                            <p><strong>CCI:</strong> 002-193-12345678001-12</p>
+                            <p><strong>Name:</strong> Modern Store SAC</p>
+                        </div>
+                        <p class="instruction">Please transfer the total amount and click "Pay" to confirm.</p>
+                    </div>
+                </div>
+
+                <div class="error-message" *ngIf="errorMessage()">
+                    {{ errorMessage() }}
+                </div>
+
+                <button type="submit" class="pay-btn" [disabled]="!checkoutForm.form.valid || isProcessing()">
+                    {{ isProcessing() ? 'Processing...' : 'Pay $' + (cartService.total() | number:'1.2-2') }}
+                </button>
+            </form>
+        </div>
+
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            <div class="summary-items">
+                <div class="summary-item" *ngFor="let item of cartService.items()">
+                    <div class="item-info">
+                        <img [src]="item.product.imageUrl" [alt]="item.product.name">
+                        <div>
+                            <p class="item-name">{{ item.product.name }}</p>
+                            <p class="item-variant">{{ item.selectedSize }} / {{ item.selectedColor }}</p>
+                            <p class="item-qty">Qty: {{ item.quantity }}</p>
+                        </div>
+                    </div>
+                    <p class="item-price">${{ (item.product.price * item.quantity) | number:'1.2-2' }}</p>
+                </div>
+            </div>
+            <div class="summary-total">
+                <span>Total</span>
+                <span>${{ cartService.total() | number:'1.2-2' }}</span>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #successMessage>
+        <div class="success-container">
+            <div class="success-icon">✓</div>
+            <h2>Order Confirmed!</h2>
+            <p>Thank you for your purchase. You will receive an email confirmation shortly.</p>
+            <button class="continue-btn" (click)="backToStore()">Continue Shopping</button>
+        </div>
+    </ng-template>
+</div>

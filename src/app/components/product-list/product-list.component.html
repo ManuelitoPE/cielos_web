@@ -1,0 +1,28 @@
+<div class="hero-section">
+    <div class="hero-content">
+        <h1>New Season<br>Arrivals</h1>
+        <p class="hero-subtitle">Minimalist essentials for the modern wardrobe.</p>
+        <button class="btn-primary">Shop Collection</button>
+    </div>
+    <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80"
+            alt="New Season Fashion">
+    </div>
+</div>
+
+<div class="container">
+    <div class="section-header">
+        <h2>New Arrivals</h2>
+        <div class="filters">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Clothing</button>
+            <button class="filter-btn">Accessories</button>
+        </div>
+    </div>
+
+    <div class="product-grid">
+        <ng-container *ngIf="products$ | async as products">
+            <app-product-card *ngFor="let product of products" [product]="product"></app-product-card>
+        </ng-container>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="cart-overlay" [class.open]="cartService.isOpen()" (click)="cartService.toggleCart()"></div>
+<div class="cart-sidebar" [class.open]="cartService.isOpen()">
+    <div class="cart-header">
+        <h2>Shopping Bag ({{ cartService.itemCount() }})</h2>
+        <button class="close-btn" (click)="cartService.toggleCart()">×</button>
+    </div>
+
+    <div class="cart-items" *ngIf="cartService.items().length > 0; else emptyCart">
+        <div class="cart-item" *ngFor="let item of cartService.items()">
+            <img [src]="item.product.imageUrl" [alt]="item.product.name">
+            <div class="item-details">
+                <h3>{{ item.product.name }}</h3>
+                <p class="variant-info">
+                    Size: {{ item.selectedSize }} | Color: {{ item.selectedColor }}
+                </p>
+                <p class="price">${{ item.product.price }}</p>
+                <div class="quantity-controls">
+                    <button (click)="cartService.updateQuantity(item.product.id, item.selectedSize, item.selectedColor, -1)">-</button>
+                    <span>{{ item.quantity }}</span>
+                    <button (click)="cartService.updateQuantity(item.product.id, item.selectedSize, item.selectedColor, 1)">+</button>
+                </div>
+            </div>
+            <button class="remove-btn" (click)="cartService.removeFromCart(item.product.id, item.selectedSize, item.selectedColor)">×</button>
+        </div>
+    </div>
+
+    <ng-template #emptyCart>
+        <div class="empty-cart">
+            <p>Your bag is empty</p>
+            <button class="continue-shopping" (click)="cartService.toggleCart()">Continue Shopping</button>
+        </div>
+    </ng-template>
+
+    <div class="cart-footer" *ngIf="cartService.items().length > 0">
+        <div class="total">
+            <span>Total</span>
+            <span>${{ cartService.total() | number:'1.2-2' }}</span>
+        </div>
+        <a routerLink="/checkout" class="checkout-btn" (click)="cartService.toggleCart()">
+            Proceed to Checkout
+        </a>
+    </div>
+</div>
