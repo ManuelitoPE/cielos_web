@@ -1,6 +1,6 @@
 <div class="product-card" [routerLink]="['/products', product.id]">
   <div class="image-container">
-    <img [src]="product.images?.[0] || 'https://placehold.co/300x400?text=No+Image'" [alt]="product.name"
+    <img [src]="product.images[0] || 'https://placehold.co/300x400?text=No+Image'" [alt]="product.name"
       loading="lazy">
   </div>
   <div class="content">

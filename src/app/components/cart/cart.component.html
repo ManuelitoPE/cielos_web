@@ -7,7 +7,7 @@
 
     <div class="cart-items" *ngIf="cartService.items().length > 0; else emptyCart">
         <div class="cart-item" *ngFor="let item of cartService.items()">
-            <img [src]="item.product.images?.[0] || 'https://placehold.co/100?text=No+Image'" [alt]="item.product.name">
+            <img [src]="item.product.images[0] || 'https://placehold.co/100?text=No+Image'" [alt]="item.product.name">
             <div class="item-details">
                 <h3>{{ item.product.name }}</h3>
                 <p class="variant-info">
