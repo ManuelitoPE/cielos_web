@@ -7,20 +7,20 @@
 
     <div class="cart-items" *ngIf="cartService.items().length > 0; else emptyCart">
         <div class="cart-item" *ngFor="let item of cartService.items()">
-            <img [src]="item.product.imageUrl" [alt]="item.product.name">
+            <img [src]="item.product.images?.[0] || 'https://placehold.co/100?text=No+Image'" [alt]="item.product.name">
             <div class="item-details">
                 <h3>{{ item.product.name }}</h3>
                 <p class="variant-info">
-                    Size: {{ item.selectedSize }} | Color: {{ item.selectedColor }}
+                    Size: {{ item.variant.size }} | Color: {{ item.variant.color }}
                 </p>
                 <p class="price">${{ item.product.price }}</p>
                 <div class="quantity-controls">
-                    <button (click)="cartService.updateQuantity(item.product.id, item.selectedSize, item.selectedColor, -1)">-</button>
+                    <button (click)="cartService.updateQuantity(item.product.id, item.variant.id, -1)">-</button>
                     <span>{{ item.quantity }}</span>
-                    <button (click)="cartService.updateQuantity(item.product.id, item.selectedSize, item.selectedColor, 1)">+</button>
+                    <button (click)="cartService.updateQuantity(item.product.id, item.variant.id, 1)">+</button>
                 </div>
             </div>
-            <button class="remove-btn" (click)="cartService.removeFromCart(item.product.id, item.selectedSize, item.selectedColor)">×</button>
+            <button class="remove-btn" (click)="cartService.removeFromCart(item.product.id, item.variant.id)">×</button>
         </div>
     </div>
 

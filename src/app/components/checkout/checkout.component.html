@@ -115,10 +115,11 @@
             <div class="summary-items">
                 <div class="summary-item" *ngFor="let item of cartService.items()">
                     <div class="item-info">
-                        <img [src]="item.product.imageUrl" [alt]="item.product.name">
+                        <img [src]="item.product.images[0] || 'https://placehold.co/100?text=No+Image'"
+                            [alt]="item.product.name">
                         <div>
                             <p class="item-name">{{ item.product.name }}</p>
-                            <p class="item-variant">{{ item.selectedSize }} / {{ item.selectedColor }}</p>
+                            <p class="item-variant">{{ item.variant.size }} / {{ item.variant.color }}</p>
                             <p class="item-qty">Qty: {{ item.quantity }}</p>
                         </div>
                     </div>

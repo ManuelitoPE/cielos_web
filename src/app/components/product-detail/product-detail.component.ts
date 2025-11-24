@@ -1,9 +1,9 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
-import { Product } from '../../models/product.model';
+import { Product, ProductVariant } from '../../models/product.model';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
@@ -21,6 +21,21 @@ export class ProductDetailComponent implements OnInit {
     product = signal<Product | null>(null);
     selectedSize = signal<string | null>(null);
     selectedColor = signal<string | null>(null);
+
+    // Computed properties to extract unique sizes and colors from variants
+    availableSizes = computed(() => {
+        const p = this.product();
+        if (!p || !p.variants) return [];
+        const sizes = [...new Set(p.variants.map(v => v.size))];
+        return sizes;
+    });
+
+    availableColors = computed(() => {
+        const p = this.product();
+        if (!p || !p.variants) return [];
+        const colors = [...new Set(p.variants.map(v => v.color))];
+        return colors;
+    });
 
     ngOnInit() {
         this.route.paramMap.pipe(
@@ -53,8 +68,11 @@ export class ProductDetailComponent implements OnInit {
         const color = this.selectedColor();
 
         if (p && size && color) {
-            this.cartService.addToCart(p, size, color);
-            // Optional: Reset selections or show feedback
+            // Find the matching variant
+            const variant = p.variants.find(v => v.size === size && v.color === color);
+            if (variant) {
+                this.cartService.addToCart(p, variant);
+            }
         }
     }
 }

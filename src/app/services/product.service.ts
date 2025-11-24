@@ -7,14 +7,14 @@ import { Product } from '../models/product.model';
     providedIn: 'root'
 })
 export class ProductService {
-    private apiUrl = 'http://localhost:3000/products';
+    private apiUrl = 'https://cielos-back.onrender.com';
     private http = inject(HttpClient);
 
     getProducts(): Observable<Product[]> {
-        return this.http.get<Product[]>(this.apiUrl);
+        return this.http.get<Product[]>(`${this.apiUrl}/products`);
     }
 
     getProduct(id: string): Observable<Product> {
-        return this.http.get<Product>(`${this.apiUrl}/${id}`);
+        return this.http.get<Product>(`${this.apiUrl}/products/${id}`);
     }
 }

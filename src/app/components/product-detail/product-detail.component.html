@@ -1,6 +1,6 @@
 <div class="product-detail-container" *ngIf="product() as p">
     <div class="product-image">
-        <img [src]="p.imageUrl" [alt]="p.name">
+        <img [src]="p.images?.[0] || 'https://placehold.co/400x600?text=No+Image'" [alt]="p.name">
     </div>
     <div class="product-info">
         <h1>{{ p.name }}</h1>
@@ -11,7 +11,7 @@
             <div class="option-group">
                 <h3>Size</h3>
                 <div class="options-grid">
-                    <button *ngFor="let size of p.sizes" [class.selected]="selectedSize() === size"
+                    <button *ngFor="let size of availableSizes()" [class.selected]="selectedSize() === size"
                         (click)="selectSize(size)" class="option-btn">
                         {{ size }}
                     </button>
@@ -21,7 +21,7 @@
             <div class="option-group">
                 <h3>Color</h3>
                 <div class="options-grid">
-                    <button *ngFor="let color of p.colors" [class.selected]="selectedColor() === color"
+                    <button *ngFor="let color of availableColors()" [class.selected]="selectedColor() === color"
                         (click)="selectColor(color)" class="option-btn">
                         {{ color }}
                     </button>
