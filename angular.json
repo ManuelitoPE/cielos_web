@@ -39,10 +39,6 @@
               "optimization": {
                 "fonts": false
               },
-              "production": {
-              "optimization": {
-                "fonts": false
-              },
               "budgets": [
                 {
                   "type": "initial",
