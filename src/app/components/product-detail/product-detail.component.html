@@ -11,38 +11,17 @@
             <div class="option-group">
                 <h3>Size</h3>
                 <div class="options-grid">
-                    <button *ngFor="let size of availableSizes()" [class.selected]="selectedSize() === size"
-                        (click)="selectSize(size)" class="option-btn">
-                        {{ size }}
-                    </button>
+                    <button *ngFor="let size of availableSizes()" [class.selected]="selectedSize() === size" </div>
+                        <div *ngIf="isLowStock()" class="stock-badge low-stock">
+                            Solo quedan {{ selectedVariantStock() }} unidades
+                        </div>
                 </div>
-            </div>
 
-            <div class="option-group">
-                <h3>Color</h3>
-                <div class="options-grid">
-                    <button *ngFor="let color of availableColors()" [class.selected]="selectedColor() === color"
-                        (click)="selectColor(color)" class="option-btn color-btn" [title]="color">
-                        <span class="color-swatch" [style.background-color]="color"></span>
-                        <span class="color-name">{{ color }}</span>
-                    </button>
-                </div>
+                <button class="add-to-cart-btn" [disabled]="!selectedSize() || !selectedColor() || isOutOfStock()"
+                    (click)="addToCart()" [class.disabled]="isOutOfStock()">
+                    {{ (!selectedSize() || !selectedColor()) ? 'Select Options' : (isOutOfStock() ? 'Agotado' : 'Add to
+                    Cart')
+                    }}
+                </button>
             </div>
         </div>
-
-        <div class="stock-warnings">
-            <div *ngIf="isOutOfStock()" class="stock-badge out-of-stock">
-                Sin Stock
-            </div>
-            <div *ngIf="isLowStock()" class="stock-badge low-stock">
-                Solo quedan {{ selectedVariantStock() }} unidades
-            </div>
-        </div>
-
-        <button class="add-to-cart-btn" [disabled]="!selectedSize() || !selectedColor() || isOutOfStock()"
-            (click)="addToCart()" [class.disabled]="isOutOfStock()">
-            {{ (!selectedSize() || !selectedColor()) ? 'Select Options' : (isOutOfStock() ? 'Agotado' : 'Add to Cart')
-            }}
-        </button>
-    </div>
-</div>

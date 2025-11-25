@@ -67,33 +67,6 @@
     border-color: #333;
 }
 
-.option-btn.selected {
-    background: #333;
-    color: white;
-    border-color: #333;
-}
-
-/* Color Button Styles */
-.option-btn.color-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.4rem 0.8rem;
-}
-
-.color-swatch {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    display: inline-block;
-}
-
-.stock-warnings {
-    margin-bottom: 1rem;
-    min-height: 24px;
-}
-
 .stock-badge {
     display: inline-block;
     padding: 0.25rem 0.75rem;
