@@ -62,6 +62,29 @@ export class ProductDetailComponent implements OnInit {
         this.selectedColor.set(color);
     }
 
+    // Computed properties for stock status
+    selectedVariantStock = computed(() => {
+        const p = this.product();
+        const size = this.selectedSize();
+        const color = this.selectedColor();
+
+        if (!p || !size || !color) return null;
+
+        const variant = p.variants.find(v => v.size === size && v.color === color);
+        // Use _stock if available (backend raw), otherwise stock property
+        return variant ? (variant._stock ?? variant.stock ?? 0) : 0;
+    });
+
+    isOutOfStock = computed(() => {
+        const stock = this.selectedVariantStock();
+        return stock !== null && stock === 0;
+    });
+
+    isLowStock = computed(() => {
+        const stock = this.selectedVariantStock();
+        return stock !== null && stock > 0 && stock < 5;
+    });
+
     addToCart() {
         const p = this.product();
         const size = this.selectedSize();
@@ -70,8 +93,14 @@ export class ProductDetailComponent implements OnInit {
         if (p && size && color) {
             // Find the matching variant
             const variant = p.variants.find(v => v.size === size && v.color === color);
-            if (variant) {
+
+            // Check stock before adding
+            const stock = variant ? (variant._stock ?? variant.stock ?? 0) : 0;
+
+            if (variant && stock > 0) {
                 this.cartService.addToCart(p, variant);
+            } else {
+                alert('Lo sentimos, este producto está agotado en la variante seleccionada.');
             }
         }
     }

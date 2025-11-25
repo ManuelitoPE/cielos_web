@@ -1,28 +1,25 @@
 .product-card {
-  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
-  position: relative;
-  animation: fadeIn 0.5s ease-out;
+  height: 100%;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .image-container {
-  width: 100%;
-  padding-top: 133%;
-  /* 3:4 Aspect Ratio (Portrait) */
   position: relative;
-  background: var(--light-grey);
+  padding-top: 133%;
+  /* 3:4 Aspect Ratio */
+  background: #f5f5f5;
   overflow: hidden;
 }
 
@@ -33,28 +30,60 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.3s;
 }
 
 .product-card:hover .image-container img {
   transform: scale(1.05);
 }
 
+.out-of-stock-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.out-of-stock-overlay span {
+  background: #dc2626;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 .content {
-  padding: 1rem 0;
-  text-align: left;
+  padding: 1rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 h3 {
   margin: 0 0 0.5rem 0;
-  font-size: 0.95rem;
-  font-weight: 400;
-  color: var(--soft-black);
-  letter-spacing: 0.5px;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+  line-height: 1.4;
+  /* Limit to 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .price {
-  font-size: 0.9rem;
+  margin-top: auto;
   font-weight: 600;
-  color: var(--soft-grey);
+  color: #111;
+  font-size: 1.1rem;
 }

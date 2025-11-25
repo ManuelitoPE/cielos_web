@@ -23,14 +23,53 @@
                 <div class="options-grid">
                     <button *ngFor="let color of availableColors()" [class.selected]="selectedColor() === color"
                         (click)="selectColor(color)" class="option-btn">
-                        {{ color }}
-                    </button>
-                </div>
-            </div>
-        </div>
+                        <div class="product-detail-container" *ngIf="product() as p">
+                            <div class="product-image">
+                                <img [src]="p.images[0] || 'https://placehold.co/400x600?text=No+Image'" [alt]="p.name">
+                            </div>
+                            <div class="product-info">
+                                <h1>{{ p.name }}</h1>
+                                <p class="price">${{ p.price }}</p>
+                                <p class="description">{{ p.description }}</p>
 
-        <button class="add-to-cart-btn" [disabled]="!selectedSize() || !selectedColor()" (click)="addToCart()">
-            {{ (!selectedSize() || !selectedColor()) ? 'Select Options' : 'Add to Cart' }}
-        </button>
-    </div>
-</div>
+                                <div class="options-section">
+                                    <div class="option-group">
+                                        <h3>Size</h3>
+                                        <div class="options-grid">
+                                            <button *ngFor="let size of availableSizes()"
+                                                [class.selected]="selectedSize() === size" (click)="selectSize(size)"
+                                                class="option-btn">
+                                                {{ size }}
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="option-group">
+                                        <h3>Color</h3>
+                                        <div class="options-grid">
+                                            <button *ngFor="let color of availableColors()"
+                                                [class.selected]="selectedColor() === color"
+                                                (click)="selectColor(color)" class="option-btn">
+                                                {{ color }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="stock-warnings">
+                                    <div *ngIf="isOutOfStock()" class="stock-badge out-of-stock">
+                                        Sin Stock
+                                    </div>
+                                    <div *ngIf="isLowStock()" class="stock-badge low-stock">
+                                        Solo quedan {{ selectedVariantStock() }} unidades
+                                    </div>
+                                </div>
+
+                                <button class="add-to-cart-btn"
+                                    [disabled]="!selectedSize() || !selectedColor() || isOutOfStock()"
+                                    (click)="addToCart()" [class.disabled]="isOutOfStock()">
+                                    {{ (!selectedSize() || !selectedColor()) ? 'Select Options' : (isOutOfStock() ?
+                                    'Agotado' : 'Add to Cart') }}
+                                </button>
+                            </div>
+                        </div>
