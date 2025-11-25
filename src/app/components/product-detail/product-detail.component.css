@@ -122,6 +122,47 @@
     cursor: not-allowed;
 }
 
+.stock-status {
+    margin-top: 1.5rem;
+    min-height: 1.5rem;
+}
+
+.stock-badge {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.stock-badge.out-of-stock {
+    color: #dc2626;
+}
+
+.stock-badge.out-of-stock::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: #dc2626;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.stock-badge.low-stock {
+    color: #d97706;
+}
+
+.stock-badge.low-stock::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: #d97706;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
 @media (max-width: 768px) {
     .product-detail-container {
         grid-template-columns: 1fr;

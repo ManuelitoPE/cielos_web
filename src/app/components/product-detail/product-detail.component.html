@@ -27,10 +27,16 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Stock Status Indicators -->
+            <div class="stock-status" *ngIf="selectedSize() && selectedColor()">
+                <span class="stock-badge out-of-stock" *ngIf="isOutOfStock()">Out of Stock</span>
+                <span class="stock-badge low-stock" *ngIf="isLowStock()">Low Stock: Only {{ selectedVariantStock() }} left</span>
+            </div>
         </div>
 
-        <button class="add-to-cart-btn" [disabled]="!selectedSize() || !selectedColor()" (click)="addToCart()">
-            {{ (!selectedSize() || !selectedColor()) ? 'Select Options' : 'Add to Cart' }}
+        <button class="add-to-cart-btn" [disabled]="!selectedSize() || !selectedColor() || isOutOfStock()" (click)="addToCart()">
+            {{ isOutOfStock() ? 'Out of Stock' : ((!selectedSize() || !selectedColor()) ? 'Select Options' : 'Add to Cart') }}
         </button>
     </div>
 </div>
